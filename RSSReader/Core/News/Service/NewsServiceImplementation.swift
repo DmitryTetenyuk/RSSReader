@@ -41,7 +41,7 @@ class NewsServiceImplementation:NSObject, NewsServiceProtocol {
                 let link = element["link"].string {
                 parsedNews.append(News(description: description, title: title, date: date, webLink: link))
             } else {
-                //err
+                print("XML parce error")
             }
         }
        return parsedNews

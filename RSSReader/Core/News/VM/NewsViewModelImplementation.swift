@@ -42,11 +42,10 @@ class NewsViewModelImplementation: NSObject, NewsViewModelProtocol {
         NewsServiceImplementation.sharedInstance.requestNewsFeed()
             .observeOn(concurrentScheduler)
             .subscribeOn(concurrentScheduler)
-            .subscribe(onNext: { (news) in
-                //TODO sort news by date
+            .subscribe(onNext: { [unowned self] (news) in
                 self.newsVariable.value = news
                 self.progressVariable.value = false
-            }, onError: { (error) in
+            }, onError: { [unowned self] (error) in
                 self.errorVariable.value = error.localizedDescription
                 self.progressVariable.value = false
             }).disposed(by: disposeBag)

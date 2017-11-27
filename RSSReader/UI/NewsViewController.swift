@@ -56,13 +56,22 @@ class NewsViewController: UIViewController, UITableViewDelegate {
         //observe error
         newsViewModel?.getErrorObservable().asObservable()
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] (completed) in
-                //show error
+            .subscribe(onNext: { [unowned self] (errorText) in
+                self.showErrorAlertWithMessage(errorText)
             }).disposed(by: disposeBag)
     }
     
     func showActivityIndicator(isShown:Bool) {
         overlayView?.isHidden = !isShown
+    }
+    
+    func showErrorAlertWithMessage(_ message:String) {
+        if (message != ""){
+            let alertViewController = UIAlertController(title: "", message: message, preferredStyle: .alert)
+            let closeAlertAction = UIAlertAction(title: "close", style: .cancel, handler: nil)
+            alertViewController.addAction(closeAlertAction)
+            self.present(alertViewController, animated: true, completion: nil)
+        }
     }
     
     func initNewsList(){
